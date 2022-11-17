@@ -1,0 +1,92 @@
+VAR -> __var__ | VAR DOT VAR
+NUM -> __num__ | NUM DOT | DOT NUM | NUM DOT NUM | MINUS NUM
+STR -> __str__
+BOOL -> true | false
+
+PLUS -> +
+MINUS -> -
+DIV -> /
+MUL -> *
+MOD -> %
+POW -> __op__
+SHL -> __op__
+SAR -> __op__
+SHR -> __op__
+INCR -> __incdec__
+DECR -> __incdec__
+
+BITWISE_NOT -> ~
+BITWISE_AND -> &
+BITWISE_OR -> __bitor__
+BITWISE_XOR -> ^
+LOGICAL_NOT -> !
+LOGICAL_AND -> __op__
+LOGICAL_OR -> __op__
+LOGICAL_NULL -> __op__
+
+LESS -> <
+GREATER -> >
+EQ -> __comp__
+NOT_EQ -> __comp__
+STRICT_EQ -> __comp__
+STRICT_NOT_EQ -> __comp__
+LE -> __comp__
+GE -> __comp__
+
+ASSIGN -> =
+MUL_ASSIGN -> __assign__
+POW_ASSIGN -> __assign__
+DIV_ASSIGN -> __assign__
+MOD_ASSIGN -> __assign__
+PLUS_ASSIGN -> __assign__
+MINUS_ASSIGN -> __assign__
+SHL_ASSIGN -> __assign__
+SAR_ASSIGN -> __assign__
+SHR_ASSIGN -> __assign__
+BITWISE_AND_ASSIGN -> __assign__
+BITWISE_XOR_ASSIGN -> __assign__
+BITWISE_OR_ASSIGN -> __assign__
+LOGICAL_AND_ASSIGN -> __assign__
+LOGICAL_OR_ASSIGN -> __assign__
+LOGICAL_NULL_ASSIGN -> __assign__
+
+COLON -> :
+SEMICOLON -> ;
+COMMA -> ,
+DOT -> .
+
+OPEN_ROUND_BRACKET -> (
+CLOSED_ROUND_BRACKET -> )
+OPEN_SQUARE_BRACKET -> [
+CLOSED_SQUARE_BRACKET -> ] 
+OPEN_CURLY_BRACKET -> {
+CLOSED_CURLY_BRACKET -> }
+
+// Gatau perlu apa ngga
+FALSE -> false
+TRUE -> true
+
+BREAK -> break
+DEFAULT -> default
+FOR -> for
+RETURN -> return
+VAR -> var
+CONST -> const
+DELETE -> delete
+FUNCTION -> function
+SWITCH -> switch
+WHILE -> while
+CASE -> case
+ELSE -> else
+IF -> if
+THROW -> throw
+CATCH -> catch
+LET -> let
+TRY -> try
+CONTINUE -> continue
+FINALLY -> finally
+NULL -> null
+
+OPERATOR -> PLUS | MINUS | DIV | MUL | MOD | POW | SHL | SAR | SHR | INCR | DECR
+ASSIGNMENT_OPERATOR -> ASSIGN | MUL_ASSIGN | POW_ASSIGN | DIV_ASSIGN | MOD_ASSIGN | PLUS_ASSIGN | MINUS_ASSIGN | SHL_ASSIGN | SAR_ASSIGN | SHR_ASSIGN | BITWISE_AND_ASSIGN | BITWISE_XOR_ASSIGN | BITWISE_OR_ASSIGN | LOGICAL_AND_ASSIGN | LOGICAL_OR_ASSIGN | LOGICAL_NULL_ASSIGN
+
