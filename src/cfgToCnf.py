@@ -1,8 +1,9 @@
+import copy
 
-
-def readGrammar(dir):
+def readGrammars(dir: str):
     # Mengembalikan dictionary berisi grammar hasil pembacaan file txt
     # Contoh : S -> A | BC maka di dictionary akan berbentuk {'S': [['A'], ['B', 'C']]}
+
     file = open(dir, "r")
 
     grammarsList = []
@@ -26,11 +27,21 @@ def readGrammar(dir):
             grammar_dict[key].append(production)
     return grammar_dict
 
-def displayGrammar(grammar_dict):
+def displayGrammar(grammar_dict : dict):
+    # Menampilan grammar
     for key, values in grammar_dict.items():
         print(key, " : ", values)
 
-x = readGrammar('src/grammar.txt')
-
-displayGrammar(x)
-# print(x.values())
+def removeUnitProduction(grammars : dict):
+    # Mengembalikan grammar yang sudah tidak ada unit production
+    # Tidak akan ada duplicate di tiap production
+    tempGrammars = copy.deepcopy(grammars)
+    nonTerminal = list(tempGrammars.keys())
+    for key in nonTerminal:
+        for item in nonTerminal:
+            if [item] in tempGrammars[key]:
+                tempGrammars[key].remove([item])
+                for elmt in tempGrammars[item]:
+                    if elmt not in tempGrammars[key]:
+                        tempGrammars[key].append(elmt)
+    return tempGrammars
