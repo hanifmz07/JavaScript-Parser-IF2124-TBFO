@@ -45,3 +45,36 @@ def removeUnitProduction(grammars : dict):
                     if elmt not in tempGrammars[key]:
                         tempGrammars[key].append(elmt)
     return tempGrammars
+
+def changeProduction(grammars : dict, search : list, change : list):
+    # grammars terdefinisi, tidak mungkin kosong
+    # Merubah mencari gramamrs yang memiliki production tertentu dan merubahnya
+    # Contoh : changeProduction(S -> ABC, ABC, XYZ) akan merubah grammars menjadi S -> XYZ
+    nonTerminal = list(grammars.keys())
+    for key in nonTerminal:
+        for i in range(len(grammars[key])):
+            if search == grammars[key][i]:
+                grammars[key][i] = change
+
+def removeLongVariable(grammars : dict):
+    # Grammars terdefinisi, tidak mungkin kosong
+    # Mengubah variable yang panjang (lebih dari 2) menjadi hanya terdiri dari 2 variabe
+    # Contoh: S -> ABC akan berubah menjadi S -> AX_0 dan X_0 -> BC
+
+    nonTerminal = list(grammars.keys())
+    count = 0
+    variable =  "X_"
+    for key in nonTerminal:
+        for i in range(len(grammars[key])):
+            production = grammars[key][i]
+            if len(production)>2:
+                tempProd = [production[0]]
+                tempProd.append(variable+str(count))
+                changeProduction(grammars, production, tempProd)
+                count+=1
+                grammars[variable+str(count)] = [production[1:]]
+
+
+# grammars = readGrammars('src/sample.txt')
+# grammars = removeUnitProduction(grammars)
+# displayGrammar(grammars)
