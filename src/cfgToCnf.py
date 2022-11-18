@@ -124,3 +124,12 @@ def cfgToCnfDebug(dir : str):
     print()
 
 cfgToCnfDebug("src/sample.txt")
+
+
+def cfgToCnf(dir : str):
+    # CFG to CNF
+    grammars = readGrammars(dir)
+    grammars = removeUnitProduction(grammars)
+    removeTerminalVariables(grammars)
+    removeLongVariable(grammars)
+    return grammars
