@@ -46,14 +46,14 @@ def removeUnitProduction(grammars : dict):
                         tempGrammars[key].append(elmt)
     return tempGrammars
 
-def changeProduction(grammars : dict, search : list, change : list):
+def changeProduction(grammars : dict, search : list, change : list, lenMin : int):
     # grammars terdefinisi, tidak mungkin kosong
     # Merubah mencari gramamrs yang memiliki production tertentu dan merubahnya
     # Contoh : changeProduction(S -> ABC, BC, X) akan merubah grammars menjadi S -> AX
     nonTerminal = list(grammars.keys())
     for key in nonTerminal:
         for i in range(len(grammars[key])):
-            if (len(grammars[key][i]) > 2):
+            if (len(grammars[key][i]) > lenMin):
                 for j in range(len(grammars[key][i])+1):
                     for k in range(j+1, len(grammars[key][i])+1):
                         if grammars[key][i][j:k] == search:
@@ -66,20 +66,55 @@ def removeLongVariable(grammars : dict):
 
     nonTerminal = list(grammars.keys())
     count = 0
-    variable =  "X_"
+    variable =  "N_"
     for key in nonTerminal:
         for i in range(len(grammars[key])):
             production = copy.deepcopy(grammars[key][i])
             if len(production)>2:
-                changeProduction(grammars, production[1:], [variable+str(count)])
+                changeProduction(grammars, production[1:], [variable+str(count)], 2)
                 grammars[variable+str(count)] = [production[1:]]
                 count+=1
 
-grammars = readGrammars('src/sample.txt')
-displayGrammar(grammars)
-print()
-grammars = removeUnitProduction(grammars)
-displayGrammar(grammars)
-print()
-removeLongVariable(grammars)
-displayGrammar(grammars)
+
+
+
+
+def removeTerminalVariables(grammars):
+    # Menghilangkan terminal yang tergabung dengan variables
+    # Contoh: S -> Aa akan menjadi S -> AT_0 dan T_0 -> a
+    count = 0
+    variable =  "T_"
+    nonTerminal = list(grammars.keys())
+    for key in nonTerminal:
+        for i in range(len(grammars[key])):
+            # print(grammars[key][i])
+            if len(grammars[key][i])>1:
+                for j in range(len(grammars[key][i])):
+                    if grammars[key][i][j] not in nonTerminal:
+                        temp = [variable + str(count)]
+                        grammars[variable + str(count)] = [[grammars[key][i][j]]]
+                        changeProduction(grammars, [grammars[key][i][j]], temp, 1)
+                        nonTerminal = list(grammars.keys())
+                        count+=1
+
+
+
+def cfgToCnf(dir : str):
+    grammars = readGrammars(dir)
+    print("Grammar mentah: ")
+    displayGrammar(grammars)
+    
+    print("\nRemove unit prod: ")
+    grammars = removeUnitProduction(grammars)
+    displayGrammar(grammars)
+    
+    print("\nRemove terminal dan variables yang masih tergabung: ")
+    removeTerminalVariables(grammars)
+    displayGrammar(grammars)
+    
+    print("\nRemove production yang memiliki lebh dari 2 simbol: ")
+    removeLongVariable(grammars)
+    displayGrammar(grammars)
+    print()
+
+cfgToCnf("src/sample.txt")
