@@ -29,12 +29,14 @@ def readGrammars(dir: str):
 
 def displayGrammar(grammar_dict : dict):
     # Menampilan grammar
+
     for key, values in grammar_dict.items():
         print(key, " : ", values)
 
 def removeUnitProduction(grammars : dict):
     # Mengembalikan grammar yang sudah tidak ada unit production
     # Tidak akan ada duplicate di tiap production
+
     tempGrammars = copy.deepcopy(grammars)
     nonTerminal = list(tempGrammars.keys())
     for key in nonTerminal:
@@ -48,8 +50,12 @@ def removeUnitProduction(grammars : dict):
 
 def changeProduction(grammars : dict, search : list, change : list, lenMin : int):
     # grammars terdefinisi, tidak mungkin kosong
-    # Merubah mencari gramamrs yang memiliki production tertentu dan merubahnya
-    # Contoh : changeProduction(S -> ABC, BC, X) akan merubah grammars menjadi S -> AX
+    # Mencari grammars yang memiliki production tertentu dan merubahnya
+    # search adalah variable/terminal yang ingin diganti, contoh : ['B', 'C']
+    # change adalah variable/terminal pengganti, contoh : ['X']
+    # lenMin adalah panjang minimum dari production yang akan diganti
+    # Contoh : changeProduction(S -> ABC, BC, X, 2) akan merubah grammars menjadi S -> AX
+
     nonTerminal = list(grammars.keys())
     for key in nonTerminal:
         for i in range(len(grammars[key])):
@@ -61,12 +67,12 @@ def changeProduction(grammars : dict, search : list, change : list, lenMin : int
 
 def removeLongVariable(grammars : dict):
     # Grammars terdefinisi, tidak mungkin kosong
-    # Mengubah variable yang panjang (lebih dari 2) menjadi hanya terdiri dari 2 variabe
-    # Contoh: S -> ABC akan berubah menjadi S -> AX_0 dan X_0 -> BC
+    # Mengubah variable yang panjang (lebih dari 2) menjadi hanya terdiri dari 2 variable
+    # Contoh: S -> ABC akan berubah menjadi S -> AV_0 dan V_0 -> BC
 
     nonTerminal = list(grammars.keys())
     count = 0
-    variable =  "N_"
+    variable =  "V_"
     for key in nonTerminal:
         for i in range(len(grammars[key])):
             production = copy.deepcopy(grammars[key][i])
@@ -76,12 +82,10 @@ def removeLongVariable(grammars : dict):
                 count+=1
 
 
-
-
-
 def removeTerminalVariables(grammars):
     # Menghilangkan terminal yang tergabung dengan variables
     # Contoh: S -> Aa akan menjadi S -> AT_0 dan T_0 -> a
+
     count = 0
     variable =  "T_"
     nonTerminal = list(grammars.keys())
@@ -99,7 +103,9 @@ def removeTerminalVariables(grammars):
 
 
 
-def cfgToCnf(dir : str):
+def cfgToCnfDebug(dir : str):
+    # Fungsi untuk keperluan debug
+
     grammars = readGrammars(dir)
     print("Grammar mentah: ")
     displayGrammar(grammars)
@@ -117,4 +123,4 @@ def cfgToCnf(dir : str):
     displayGrammar(grammars)
     print()
 
-cfgToCnf("src/sample.txt")
+cfgToCnfDebug("src/sample.txt")
