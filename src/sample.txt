@@ -1,4 +1,4 @@
-VAR -> __var__ | __num__ | NUM
-NUM -> __num__ | NUM DOT | DOT NUM | NUM DOT NUM | MINUS NUM DOT
+VAR -> __var__ | __num__ | NUM DOT | NUM 
+NUM -> __num__ | NUM DOT | DOT NUM DOT | NUM DOT NUM | MINUS NUM DOT
 STR -> __str__
 BOOL -> true | false

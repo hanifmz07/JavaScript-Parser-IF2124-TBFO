@@ -49,12 +49,15 @@ def removeUnitProduction(grammars : dict):
 def changeProduction(grammars : dict, search : list, change : list):
     # grammars terdefinisi, tidak mungkin kosong
     # Merubah mencari gramamrs yang memiliki production tertentu dan merubahnya
-    # Contoh : changeProduction(S -> ABC, ABC, XYZ) akan merubah grammars menjadi S -> XYZ
+    # Contoh : changeProduction(S -> ABC, BC, X) akan merubah grammars menjadi S -> AX
     nonTerminal = list(grammars.keys())
     for key in nonTerminal:
         for i in range(len(grammars[key])):
-            if search == grammars[key][i]:
-                grammars[key][i] = change
+            if (len(grammars[key][i]) > 2):
+                for j in range(len(grammars[key][i])+1):
+                    for k in range(j+1, len(grammars[key][i])+1):
+                        if grammars[key][i][j:k] == search:
+                            grammars[key][i][j:k] = change
 
 def removeLongVariable(grammars : dict):
     # Grammars terdefinisi, tidak mungkin kosong
@@ -66,15 +69,17 @@ def removeLongVariable(grammars : dict):
     variable =  "X_"
     for key in nonTerminal:
         for i in range(len(grammars[key])):
-            production = grammars[key][i]
+            production = copy.deepcopy(grammars[key][i])
             if len(production)>2:
-                tempProd = [production[0]]
-                tempProd.append(variable+str(count))
-                changeProduction(grammars, production, tempProd)
-                count+=1
+                changeProduction(grammars, production[1:], [variable+str(count)])
                 grammars[variable+str(count)] = [production[1:]]
+                count+=1
 
-
-# grammars = readGrammars('src/sample.txt')
-# grammars = removeUnitProduction(grammars)
-# displayGrammar(grammars)
+grammars = readGrammars('src/sample.txt')
+displayGrammar(grammars)
+print()
+grammars = removeUnitProduction(grammars)
+displayGrammar(grammars)
+print()
+removeLongVariable(grammars)
+displayGrammar(grammars)
