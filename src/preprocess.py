@@ -23,7 +23,7 @@ def removeComment(dir : str):
         for i in range(0, len(line)):
             char = line[i]
             if i == 0:          # Remove line comment
-                if char != '\n':
+                if i < len(line)-1:
                     if char+line[i+1] == "//":
                         acc = False
                         lineComment = True

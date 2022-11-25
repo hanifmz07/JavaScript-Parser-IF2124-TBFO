@@ -69,7 +69,7 @@ def CYK(rule : dict, input : list):
             else:
                 for k in range(i):
                     temp = combinationNonTerminalsCYK(table[n-k-1][j], table[n-i+k][j+k+1])                    
-                    print(temp)
+                    # print(temp)
                     temp = getNonTerminalsCYK(rule, temp)
                     # print(temp)
                     hasil = union(hasil, temp)
