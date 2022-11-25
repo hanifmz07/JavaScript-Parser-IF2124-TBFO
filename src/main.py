@@ -6,6 +6,7 @@ import sys
 
 def main():
     rule = cfgToCnf('src/grammar.txt')
+    displayGrammar(rule)
     nama_file = sys.argv[1]
     hasil, flag = preprocess(nama_file)
     print("Checking Syntax...\n")
@@ -13,6 +14,7 @@ def main():
         print("Not Accepted")
     else:
         res = CYK(rule,hasil)
+        # displayTable(table)
         if res:
             print("Not Accepted")
         else:

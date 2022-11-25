@@ -68,13 +68,16 @@ def CYK(rule : dict, input : list):
                 table[n-i-1][j] = getNonTerminalsCYK(rule, [[input[j]]])
             else:
                 for k in range(i):
-                    temp = combinationNonTerminalsCYK(table[n-k-1][j], table[n-i+k][j+k+1])
+                    temp = combinationNonTerminalsCYK(table[n-k-1][j], table[n-i+k][j+k+1])                    
+                    # print(temp)
                     temp = getNonTerminalsCYK(rule, temp)
+                    # print(temp)
                     hasil = union(hasil, temp)
                 
                 table[n-i-1][j] = hasil
 
-    # displayTable(table)
+    for row in table:
+        print(row)
     if 'S' in table[0][0]:
         return True
     else :
