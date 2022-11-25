@@ -123,7 +123,7 @@ def removeLongVariable2(grammars : dict):
                 newGrammar[variable+str(count)] = [production[1:]]
                 count+=1
         nonTerminal = list(newGrammar.keys())
-        print(count)
+        # print(count)
     return newGrammar
 
 def removeLongVariable3(grammars : dict):
@@ -145,7 +145,7 @@ def removeLongVariable3(grammars : dict):
                 newGrammar[variable+str(count)] = [production[1:]]
                 count+=1
         nonTerminal = list(newGrammar.keys())
-        print(count)
+        # print(count)
     return newGrammar    
 
 def removeLongVariable(grammars : dict):
