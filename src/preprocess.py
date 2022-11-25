@@ -93,14 +93,6 @@ def separate(str1 : str, listPemisah : list):
                             newStr += ' '
         newStr += char
     return newStr
-
-def checkVarName(input):
-    # Jika return 0 maka ada kemungkinan merupakan terminal lain   
-    alphabets = 'abcdefghijklmnopqrstuvwxyz'
-    if input[0] not in alphabets:
-        return 0
-    else :
-        return ['__varname__']
     
 def checkStr(input):
     # Jika return 0 maka ada kemungkinan merupakan terminal lain 
