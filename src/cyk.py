@@ -74,7 +74,8 @@ def CYK(rule : dict, input : list):
                 
                 table[n-i-1][j] = hasil
 
-    # displayTable(table)
+    for row in table:
+        print(row)
     if 'S' in table[0][0]:
         return True
     else :

@@ -4,7 +4,7 @@ BIGINT -> __bigint__
 STR -> __str__
 BOOL -> true | false
 
-PLUS ->__opunop__
+PLUS -> __opunop__
 MINUS -> __opunop__
 DIV -> __op__
 MUL -> __op__

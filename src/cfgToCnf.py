@@ -70,17 +70,66 @@ def removeLongVariable(grammars : dict):
     # Mengubah variable yang panjang (lebih dari 2) menjadi hanya terdiri dari 2 variable
     # Contoh: S -> ABC akan berubah menjadi S -> AV_0 dan V_0 -> BC
 
-    nonTerminal = list(grammars.keys())
+    # nonTerminal = list(grammars.keys())
     count = 0
     variable =  "V_"
-    for key in nonTerminal:
+    for key in list(grammars.keys()):
         for i in range(len(grammars[key])):
             production = copy.deepcopy(grammars[key][i])
             if len(production)>2:
                 changeProduction(grammars, production[1:], [variable+str(count)], 2)
                 grammars[variable+str(count)] = [production[1:]]
                 count+=1
+        # nonTerminal = list(grammars.keys())
 
+def removeLongVariable1(grammars : dict):
+    # Grammars terdefinisi, tidak mungkin kosong
+    # Mengubah variable yang panjang (lebih dari 2) menjadi hanya terdiri dari 2 variable
+    # Contoh: S -> ABC akan berubah menjadi S -> AV_0 dan V_0 -> BC
+
+    # nonTerminal = 
+    count = 0
+    variable =  "V_"
+    
+    newGrammar  = copy.deepcopy(grammars)
+    nonTerminal = list(newGrammar.keys())
+    for key in nonTerminal:
+        for i in range(len(newGrammar[key])):
+            production = copy.deepcopy(newGrammar[key][i])
+            if len(production)>2:
+                changeProduction(newGrammar, production[1:], [variable+str(count)], 2)
+                newGrammar[variable+str(count)] = [production[1:]]
+                count+=1
+        nonTerminal = list(newGrammar.keys())
+    return newGrammar
+        # nonTerminal = list(grammars.keys())
+
+def removeLongVariable2(grammars : dict):
+    # Grammars terdefinisi, tidak mungkin kosong
+    # Mengubah variable yang panjang (lebih dari 2) menjadi hanya terdiri dari 2 variable
+    # Contoh: S -> ABC akan berubah menjadi S -> AV_0 dan V_0 -> BC
+
+    count = 0
+    variable =  "W_"
+    
+    newGrammar  = copy.deepcopy(grammars)
+    nonTerminal = list(newGrammar.keys())
+    for key in nonTerminal:
+        for i in range(len(newGrammar[key])):
+            production = copy.deepcopy(newGrammar[key][i])
+            if len(production)>2:
+                
+                changeProduction(newGrammar, production[1:], [variable+str(count)], 2)
+                newGrammar[variable+str(count)] = [production[1:]]
+                count+=1
+        nonTerminal = list(newGrammar.keys())
+        print(count)
+    return newGrammar
+
+def removeLongVariable(grammars : dict):
+    g1 = removeLongVariable1(grammars)
+    g2 = removeLongVariable2(g1)
+    return g2
 
 def removeTerminalVariables(grammars):
     # Menghilangkan terminal yang tergabung dengan variables
@@ -131,5 +180,5 @@ def cfgToCnf(dir : str):
     grammars = readGrammars(dir)
     grammars = removeUnitProduction(grammars)
     removeTerminalVariables(grammars)
-    removeLongVariable(grammars)
+    grammars = removeLongVariable(grammars)
     return grammars
