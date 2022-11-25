@@ -123,7 +123,7 @@ def cfgToCnfDebug(dir : str):
     displayGrammar(grammars)
     print()
 
-cfgToCnfDebug("src/sample.txt")
+# cfgToCnfDebug("src/sample.txt")
 
 
 def cfgToCnf(dir : str):
