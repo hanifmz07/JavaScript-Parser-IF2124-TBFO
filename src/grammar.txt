@@ -34,7 +34,7 @@ STRICT_NOT_EQ -> __comp__
 LE -> __comp__
 GE -> __comp__
 
-ASSIGN -> =
+ASSIGN -> __assign__
 MUL_ASSIGN -> __assign__
 POW_ASSIGN -> __assign__
 DIV_ASSIGN -> __assign__
