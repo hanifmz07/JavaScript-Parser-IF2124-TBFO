@@ -126,10 +126,33 @@ def removeLongVariable2(grammars : dict):
         print(count)
     return newGrammar
 
+def removeLongVariable3(grammars : dict):
+    # Grammars terdefinisi, tidak mungkin kosong
+    # Mengubah variable yang panjang (lebih dari 2) menjadi hanya terdiri dari 2 variable
+    # Contoh: S -> ABC akan berubah menjadi S -> AV_0 dan V_0 -> BC
+
+    count = 0
+    variable =  "Y_"
+    
+    newGrammar  = copy.deepcopy(grammars)
+    nonTerminal = list(newGrammar.keys())
+    for key in nonTerminal:
+        for i in range(len(newGrammar[key])):
+            production = copy.deepcopy(newGrammar[key][i])
+            if len(production)>2:
+                
+                changeProduction(newGrammar, production[1:], [variable+str(count)], 2)
+                newGrammar[variable+str(count)] = [production[1:]]
+                count+=1
+        nonTerminal = list(newGrammar.keys())
+        print(count)
+    return newGrammar    
+
 def removeLongVariable(grammars : dict):
     g1 = removeLongVariable1(grammars)
     g2 = removeLongVariable2(g1)
-    return g2
+    g3 = removeLongVariable3(g2)
+    return g3
 
 def removeTerminalVariables(grammars):
     # Menghilangkan terminal yang tergabung dengan variables
