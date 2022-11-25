@@ -14,9 +14,9 @@ def main():
     else:
         res = CYK(rule,hasil)
         if res:
-            print("Accepted")
+            print("Not Accepted")
         else:
-            print("Not accepted")
+            print("Accepted")
     # print(rule)
 if __name__ == '__main__':
     main()    
