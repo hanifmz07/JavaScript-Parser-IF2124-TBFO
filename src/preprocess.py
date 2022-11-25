@@ -1,4 +1,4 @@
-
+from FA import *
 
 jsSymbol = ['break','default','for','return','var','const','delete','function','switch','case','while',
             'if', 'else','throw','catch','let','try','continue','finally','null']
@@ -165,13 +165,19 @@ def subtituteSymbol(lst1 : list, allSymbol : list):
 
         elif lst1[i] not in allSymbol:
             # print(lst1[i], end = " ")
-            subtitute = checkVarName(lst1[i])
+            generateFA('Q0', 'Q1', transition)
+            generateFA('Q1', 'Q1', transition)
+            generateFA('Q1', 'Q2', transition)
+            generateFA('Q0', 'Q2', transition)
+            generateFA('Q2', 'Q2', transition)
+
+            # print(cekVariable(input()))
+            subtitute = cekVariable(lst1[i])
             if isinstance(subtitute, int):
                 subtitute = checkStr(lst1[i])
             if isinstance(subtitute, int):
                 subtitute = checkNum(lst1[i])
             if isinstance(subtitute, int):
-                print("Not accepted")
                 flag = False
                 break
             # print(subtitute, end = " \n")
@@ -182,11 +188,44 @@ def subtituteSymbol(lst1 : list, allSymbol : list):
 def printSource(input : str):
     print("\n\n========================= Source Code =========================")
     print(input)
-    print("========================= End Of Line =========================\n\n")
+    print("========================= End Of Line =========================\n")
+
+def checkConBreak(res : str):
+    inLoop = False
+    inSwitch = False
+    loopCount = 0
+    switchCount = 0
+    flag = True
+    for i in range(len(res)):
+        if res[i] == 'for' or res[i] == 'while' or res[i] == 'switch':
+            if res[i] == 'switch':
+                inSwitch = True
+            else:
+                inLoop = True
+
+        elif (res[i] =='{' or res[i] =='}') and (inLoop or inSwitch):
+            if inLoop:
+                if res[i] =='{':
+                    loopCount+=1
+                else:
+                    loopCount-=1
+                if loopCount==0:
+                    inLoop = False
+            else:
+                if res[i] =='{':
+                    switchCount+=1
+                else:
+                    switchCount-=1
+                if switchCount==0:
+                    inSwitch = False                
+        elif res[i] == 'break' or res[i] == 'continue':
+            flag = inLoop or inSwitch
+    return flag
+
 
 listPemisah = bracket + arithOp + assignmentOp + bitwiseOp + compareOp + logicalOp + incDec + other
 allSymbol = jsSymbol +  listPemisah + boolean
-def process(dir : str):
+def preprocess(dir : str):
     # Input string berisi directory file javascript yang akan dicek
     # Output list of tokenize grammar dan flag
     # List of tokenize grammar akan dimasukan ke cyk untuk ngecek valid atau engga
@@ -198,10 +237,20 @@ def process(dir : str):
     printSource(strNoComment)
     strPisah = separate(strNoComment,listPemisah) 
     listPisah = strPisah.split()   
-    listDone, flag = subtituteSymbol(listPisah, allSymbol)
-    return listDone, flag
+    listSubtitute, flag = subtituteSymbol(listPisah, allSymbol)
+    if flag:
+        flag = checkConBreak(listSubtitute)
 
-res, flag = process('test/test.js') 
-print(res)
-print(flag)
+    return listSubtitute, flag
 
+
+# res, flag = preprocess('test/test.js') 
+# print(res)
+# print(flag)
+
+
+
+
+
+
+# print(checkConBreak(res))    

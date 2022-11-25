@@ -55,11 +55,11 @@ def cekVariable(variable):
             current_state = transition[(current_state, char)]
         
         if (current_state in accept_states):
-            print("ACCEPTED")
+            return ['__varname__']
         else:
-            print("REJECTED")
+            return 0
     else:
-        print("REJECTED")
+        return 0
 
 
 # DEBUGING
@@ -70,7 +70,7 @@ def main():
     generateFA('Q0', 'Q2', transition)
     generateFA('Q2', 'Q2', transition)
 
-    cekVariable(input())
+    print(cekVariable(input()))
 
 
 # DRIVER

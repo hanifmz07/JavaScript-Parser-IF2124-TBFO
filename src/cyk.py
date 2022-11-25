@@ -57,7 +57,7 @@ def displayTable(table):    # Menampilkan table dari CYK
                 print((spacing-len(elmt))*" ", end ='')
         print()    
 
-def CYK(rule, input : list):
+def CYK(rule : dict, input : list):
     n = len(input)
     table = [[[] for i in range(j+1)] for j in range(n)]
 
@@ -75,9 +75,9 @@ def CYK(rule, input : list):
                 table[n-i-1][j] = hasil
 
     # displayTable(table)
-    if list(rule.keys())[0] in table[0][0]:
+    if 'S' in table[0][0]:
         return True
     else :
         return False
 
-print(CYK(R, ['a','b','a','b','a']))
+# print(CYK(R, ['a','b','a','b','a']))
