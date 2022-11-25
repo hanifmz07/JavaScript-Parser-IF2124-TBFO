@@ -1,14 +1,7 @@
-/*asdbas
-
-
-asdasdasddasd
-bd*/
-
-
-let nextTerm = 0;   // test
-for (let i = 1; i <= 5; i++) {
-    nextTerm = nextTerm + 1;
+/*Test comment 
+block*/
+let nextTerm = 2**5;   // test comment line
+if(1!==3){
+    nextTerm<<=3;
 }
-console.log(nextTerm);
-
-/*asdbasbd*/
+// test comment line

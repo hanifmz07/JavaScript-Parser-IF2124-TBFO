@@ -1,4 +1,17 @@
 
+
+jsSymbol = ['break','default','for','return','var','const','delete','function','switch','case','while',
+            'if', 'else','throw','catch','let','try','continue','finally','null']
+bracket = ['[',']','(',')','{','}']
+arithOp = ['+', '-', '*', '/', '%','//','**']
+assignmentOp = ['=','+=','-=','*=','/=','%=','**=', '<<=','>>=','>>>=', '&=', '|=','^=','&&=', '||=', '??=']
+bitwiseOp = ['&','|','^','~','<<','>>','>>>']
+compareOp = ['<=', '>=', '==', '!=','>','<','===','!==']
+logicalOp = ['&&','||','!','??']
+incDec = ['--', '++']
+other = ['.',',',';',':','?']
+boolean = ['true', 'false']
+
 def removeComment(dir : str):
     # Masukkan string berupa directory file
     # Keluaran string panjang tanpa comment dan newline
@@ -49,6 +62,146 @@ def removeComment(dir : str):
         if lineComment:
             acc = True
             lineComment = False
+        newStr+='\n'
+    return newStr 
+
+def separate(str1 : str, listPemisah : list):
+    op1 = []
+    op2 = []
+    for elmt in listPemisah:
+        if len(elmt) == 1:
+            op1.append(elmt)
+        elif len(elmt) == 2:
+            op2.append(elmt)
+
+    newStr = ''
+    for i in range(len(str1)):
+        for pemisah in op1:
+            char = str1[i]
+            if len(pemisah) == 1 and i != 0:
+                if char == pemisah and str1[i-1]+char not in op2:
+                    if str1[i-1] in '1234567890' and pemisah == '.':
+                        newStr += ''
+                    else: 
+                        newStr += ' '
+
+                if i != 0:
+                    if str1[i-1] == pemisah and str1[i-1]+char not in op2:
+                        if char in '1234567890' and pemisah == '.':
+                            newStr += ''
+                        else: 
+                            newStr += ' '
+        newStr += char
     return newStr
+
+def checkVarName(input):
+    # Jika return 0 maka ada kemungkinan merupakan terminal lain   
+    alphabets = 'abcdefghijklmnopqrstuvwxyz'
+    if input[0] not in alphabets:
+        return 0
+    else :
+        return ['__varname__']
     
-print(removeComment('test/test.js'), end='')
+def checkStr(input):
+    # Jika return 0 maka ada kemungkinan merupakan terminal lain 
+    if (input[0] == '\''  and input[-1] == '\'') or (input[0] == '\"' and input[-1] == '\"'):
+        return ['__str__']        
+    else :
+        return 0
+
+def checkNum(input):
+    # Jika return -1 maka pasti syntax error
+    numbers = '-0123456789.n'
+    for char in input:
+        if char not in numbers:
+            return -1
+
+    if '.' in input and 'n' not in input:
+        if input.count('.') > 1 :
+            return -1
+
+        if input[0] == '.':
+            return ['.', '__num__']
+        elif input[-1] == '.':
+            return ['__num__', '.']
+        else:
+            return ['__num__', '.','__num__']
+
+    elif 'n' in input and '.' not in input:
+        if input.count('n') > 1 :
+            return -1
+        
+        if input[-1] == 'n':
+            return ['__bigint__']
+        else :
+            return -1
+    elif 'n' not in input and '.' not in input:
+        return ['__num__']
+    else :
+        return -1
+
+def subtituteSymbol(lst1 : list, allSymbol : list):
+    flag = True
+    for i in range(len(lst1)):
+        if lst1[i] == '**' or lst1[i] ==  '<<' or lst1[i] == '>>' or lst1[i] =='>>>' \
+        or lst1[i] =='&&'or lst1[i] =='||' or lst1[i] =='??' or lst1[i] =='+' \
+        or lst1[i] =='-' or lst1[i] =='/' or lst1[i] =='*' or lst1[i] =='%' \
+        or lst1[i] =='&' or lst1[i] =='|' or lst1[i] =='^':
+            lst1[i] = '__op__'
+        elif lst1[i] =='!' or lst1[i] =='~':
+            lst1[i] = '__unop__'
+        elif lst1[i] =='+' or lst1[i] =='-':
+            lst1[i] = '__opunop__'
+        elif lst1[i] == '==' or lst1[i] == '===' or lst1[i] == '!=' or lst1[i] == '!==' \
+        or lst1[i] == '>=' or lst1[i] == '<=' or lst1[i] == '<' or lst1[i] == '>':
+            lst1[i] = '__comp__'
+        elif lst1[i] == '--' or lst1[i] == '++':
+            lst1[i] = '__incdec__'
+        elif lst1[i] == '=' or lst1[i] == '+=' or lst1[i] == '-=' or lst1[i] == '*=' \
+        or lst1[i] == '**=' or lst1[i] == '/=' or lst1[i] == '<<=' or lst1[i] == '>>=' \
+        or lst1[i] == '>>>=' or lst1[i] == '^=' or lst1[i] == '&=' or lst1[i] == '|=' \
+        or lst1[i] == '&&=' or lst1[i] == '||=' or lst1[i] == '??=':
+            lst1[i] = '__assign__'
+
+        elif lst1[i] not in allSymbol:
+            # print(lst1[i], end = " ")
+            subtitute = checkVarName(lst1[i])
+            if isinstance(subtitute, int):
+                subtitute = checkStr(lst1[i])
+            if isinstance(subtitute, int):
+                subtitute = checkNum(lst1[i])
+            if isinstance(subtitute, int):
+                print("Not accepted")
+                flag = False
+                break
+            # print(subtitute, end = " \n")
+            else:
+                lst1[i:i+1] = subtitute
+    return lst1, flag
+
+def printSource(input : str):
+    print("\n\n========================= Source Code =========================")
+    print(input)
+    print("========================= End Of Line =========================\n\n")
+
+listPemisah = bracket + arithOp + assignmentOp + bitwiseOp + compareOp + logicalOp + incDec + other
+allSymbol = jsSymbol +  listPemisah + boolean
+def process(dir : str):
+    # Input string berisi directory file javascript yang akan dicek
+    # Output list of tokenize grammar dan flag
+    # List of tokenize grammar akan dimasukan ke cyk untuk ngecek valid atau engga
+    # flag untuk menandakan apakah ada syntax error ketika tokenize atau tidak
+    # Jika flag == true maka berhasil dibuat list of tokenize dari input file javascript
+    # Jika flag == false maka tidak berhasil karena ada syntax yang pasti error (Langsung not accepted)
+
+    strNoComment = removeComment(dir)
+    printSource(strNoComment)
+    strPisah = separate(strNoComment,listPemisah) 
+    listPisah = strPisah.split()   
+    listDone, flag = subtituteSymbol(listPisah, allSymbol)
+    return listDone, flag
+
+res, flag = process('test/test.js') 
+print(res)
+print(flag)
+
